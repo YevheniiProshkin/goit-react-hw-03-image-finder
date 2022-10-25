@@ -17,7 +17,7 @@
 
 import { Component } from 'react';
 import api from '../services/PixabayAPI';
-import { Container } from 'style/Base.styled';
+import { Container } from 'style/AppContainer.styled';
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { LoadMore } from 'components/Button/Button';

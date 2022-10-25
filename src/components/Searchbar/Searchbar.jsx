@@ -7,11 +7,13 @@ import {
   Input,
   Span,
 } from 'components/Searchbar/Searchbar.styled';
+import { MdSearch } from 'react-icons/md';
 
 export class Searchbar extends Component {
   state = {
     searchQuery: '',
   };
+
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.searchQuery === '') {
@@ -20,14 +22,17 @@ export class Searchbar extends Component {
     }
     this.props.onSubmit(this.state.searchQuery);
   };
+
   handleChange = e => {
     this.setState({ searchQuery: [e.target.value.toLowerCase()] });
   };
+
   render() {
     return (
       <Header>
         <Form onSubmit={this.handleSubmit}>
           <Button type="submit">
+            <MdSearch size={30} />
             <Span>Search</Span>
           </Button>
 
