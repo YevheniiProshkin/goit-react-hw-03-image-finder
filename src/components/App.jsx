@@ -27,16 +27,19 @@ export class App extends Component {
 
         const images = await api.fetchImages(searchQuery, page);
 
-        if (prevState.searchQuery === this.state.searchQuery) {
-          this.setState(prevState => {
-            return {
-              totalHits: images.hits,
-              images: [...prevState.images, ...images],
-            };
-          });
-        } else {
-          this.setState({ images: images });
-        }
+        // if (prevState.searchQuery === this.state.searchQuery) {
+        this.setState(prevState => {
+          return {
+            totalHits: images.hits,
+            images: [...prevState.images, ...images],
+          };
+        });
+        // if (page === 1 && images.totalHits !== 0) {
+        //   this.setState({ error: 'error' });
+        // }
+        // } else {
+        //   this.setState({ images: images });
+        // }
       } catch (error) {
         this.setState({ error: 'picture not found' });
       } finally {
@@ -50,6 +53,7 @@ export class App extends Component {
     this.setState({
       searchQuery: [searchQuery.toString()],
       page: 1,
+      images: [],
     });
   };
 
@@ -77,7 +81,18 @@ export class App extends Component {
   };
 
   render() {
-    const { images, isLoading, isOpen, modalImageURL, totalHits } = this.state;
+    const { images, isLoading, isOpen, modalImageURL, totalHits, page } =
+      this.state;
+
+    const pages = Math.ceil(totalHits / 12);
+
+    // const lastPage = page === pages;
+
+    const showLoadMore = page === pages && !images.length && !isLoading;
+
+    // const ShowLoadMore =
+    //   images.length !== 0 && images.length !== totalHits && !isLoading;
+
     return (
       <Container>
         <Searchbar onSubmit={this.onSubmit} />
@@ -89,7 +104,6 @@ export class App extends Component {
           <ImageGallery images={images} onClick={this.onItemClick} />
         )}
         {/* {images.length >= 12 && <LoadMore onClick={this.onButtonClick} />} */}
-        {images.length > totalHits && <LoadMore onClick={this.onButtonClick} />}
         {/* {!isLoading &&
           error === '' &&
           (totalHits ? (
@@ -97,6 +111,8 @@ export class App extends Component {
           ) : (
             images.length !== 0 && <LoadMore handleClick={this.onButtonClick} />
           ))} */}
+        {showLoadMore && <LoadMore onClick={this.onButtonClick} />}
+        {/* {!isLoading && !lastPage && <LoadMore onClick={this.onButtonClick} />} */}
       </Container>
     );
   }
