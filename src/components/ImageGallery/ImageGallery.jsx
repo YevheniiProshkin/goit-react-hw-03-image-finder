@@ -10,7 +10,7 @@ export const ImageGallery = ({ images, onClick }) => {
           return (
             <ImageGalleryItem
               key={id}
-              id={id}
+              largeImageURL={largeImageURL}
               imageUrl={webformatURL}
               onClick={onClick}
             />
@@ -26,4 +26,5 @@ ImageGallery.propTypes = {
     PropTypes.shape({ id: PropTypes.number.isRequired })
   ),
   onClick: PropTypes.func.isRequired,
+  largeImageUrl: PropTypes.string.isRequired,
 };

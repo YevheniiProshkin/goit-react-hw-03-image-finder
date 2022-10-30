@@ -1,20 +1,3 @@
-// export const App = () => {
-//   return (
-//     <div
-//       style={{
-//         height: '100vh',
-//         display: 'flex',
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         fontSize: 140,
-//         color: '#010101',
-//       }}
-//     >
-//       👀 in progress
-//     </div>
-//   );
-// };
-
 import { Component } from 'react';
 import api from '../services/PixabayAPI';
 import { Container } from 'style/AppContainer.styled';
@@ -33,6 +16,7 @@ export class App extends Component {
     error: null,
     modalImageURL: null,
     isOpen: false,
+    totalHits: null,
   };
 
   async componentDidUpdate(prevProp, prevState) {
@@ -40,16 +24,21 @@ export class App extends Component {
     if (searchQuery !== prevState.searchQuery || page !== prevState.page) {
       try {
         this.setState({ isLoading: true });
+
         const images = await api.fetchImages(searchQuery, page);
+
         if (prevState.searchQuery === this.state.searchQuery) {
           this.setState(prevState => {
-            return { images: [...prevState.images, ...images] };
+            return {
+              totalHits: images.hits,
+              images: [...prevState.images, ...images],
+            };
           });
         } else {
           this.setState({ images: images });
         }
       } catch (error) {
-        this.setState({ error: 'picture not found 🤷‍♀️' });
+        this.setState({ error: 'picture not found' });
       } finally {
         this.setState({ isLoading: false });
       }
@@ -70,8 +59,10 @@ export class App extends Component {
     });
   };
 
-  onItemClick = id => {
-    const modalImage = this.state.images.find(image => image.id === id);
+  onItemClick = largeImageURL => {
+    const modalImage = this.state.images.find(
+      image => image.largeImageURL === largeImageURL
+    );
     this.setState({
       modalImageURL: modalImage.largeImageURL,
       isOpen: true,
@@ -86,7 +77,7 @@ export class App extends Component {
   };
 
   render() {
-    const { images, isLoading, isOpen, modalImageURL } = this.state;
+    const { images, isLoading, isOpen, modalImageURL, totalHits } = this.state;
     return (
       <Container>
         <Searchbar onSubmit={this.onSubmit} />
@@ -97,7 +88,15 @@ export class App extends Component {
         {images.length > 0 && (
           <ImageGallery images={images} onClick={this.onItemClick} />
         )}
-        {images.length >= 12 && <LoadMore onClick={this.onButtonClick} />}
+        {/* {images.length >= 12 && <LoadMore onClick={this.onButtonClick} />} */}
+        {images.length > totalHits && <LoadMore onClick={this.onButtonClick} />}
+        {/* {!isLoading &&
+          error === '' &&
+          (totalHits ? (
+            <p>No more content</p>
+          ) : (
+            images.length !== 0 && <LoadMore handleClick={this.onButtonClick} />
+          ))} */}
       </Container>
     );
   }

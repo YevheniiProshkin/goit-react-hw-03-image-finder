@@ -4,9 +4,9 @@ import {
   Image,
 } from 'components/ImageGalleryItem/ImageGalleryItem.styled';
 
-export const ImageGalleryItem = ({ id, imageUrl, onClick }) => {
+export const ImageGalleryItem = ({ imageUrl, onClick, largeImageURL }) => {
   return (
-    <Item onClick={() => onClick(id)}>
+    <Item onClick={() => onClick(largeImageURL)}>
       <Image src={imageUrl} alt="" />
     </Item>
   );
@@ -16,4 +16,5 @@ ImageGalleryItem.propTypes = {
   id: PropTypes.number.isRequired,
   imageUrl: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
+  largeImageUrl: PropTypes.string.isRequired,
 };
