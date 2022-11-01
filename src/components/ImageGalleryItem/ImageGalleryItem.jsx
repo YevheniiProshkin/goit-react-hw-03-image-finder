@@ -13,8 +13,7 @@ export const ImageGalleryItem = ({ imageUrl, onClick, largeImageURL }) => {
 };
 
 ImageGalleryItem.propTypes = {
-  id: PropTypes.number.isRequired,
   imageUrl: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  largeImageUrl: PropTypes.string.isRequired,
+  largeImageUrl: PropTypes.string,
 };

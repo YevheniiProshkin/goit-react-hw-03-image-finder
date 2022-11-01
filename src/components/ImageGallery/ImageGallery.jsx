@@ -26,5 +26,5 @@ ImageGallery.propTypes = {
     PropTypes.shape({ id: PropTypes.number.isRequired })
   ),
   onClick: PropTypes.func.isRequired,
-  largeImageUrl: PropTypes.string.isRequired,
+  largeImageUrl: PropTypes.string,
 };
