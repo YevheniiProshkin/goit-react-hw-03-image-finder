@@ -12,7 +12,8 @@ const fetchImages = async (search, page) => {
       largeImageURL: largeImageURL,
     })
   );
-  return images;
+  const pages = Math.ceil(response.data.hits / 12);
+  return { images, pages };
 };
 
 const api = {

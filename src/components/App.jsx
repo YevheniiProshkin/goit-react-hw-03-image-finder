@@ -16,7 +16,7 @@ export class App extends Component {
     error: null,
     modalImageURL: null,
     isOpen: false,
-    totalHits: null,
+    pages: null,
   };
 
   async componentDidUpdate(prevProp, prevState) {
@@ -25,21 +25,14 @@ export class App extends Component {
       try {
         this.setState({ isLoading: true });
 
-        const images = await api.fetchImages(searchQuery, page);
+        const { images, pages } = await api.fetchImages(searchQuery, page);
 
-        // if (prevState.searchQuery === this.state.searchQuery) {
         this.setState(prevState => {
           return {
-            totalHits: images.hits,
+            pages,
             images: [...prevState.images, ...images],
           };
         });
-        // if (page === 1 && images.totalHits !== 0) {
-        //   this.setState({ error: 'error' });
-        // }
-        // } else {
-        //   this.setState({ images: images });
-        // }
       } catch (error) {
         this.setState({ error: 'picture not found' });
       } finally {
@@ -81,17 +74,10 @@ export class App extends Component {
   };
 
   render() {
-    const { images, isLoading, isOpen, modalImageURL, totalHits, page } =
+    const { images, isLoading, isOpen, modalImageURL, page, pages } =
       this.state;
 
-    const pages = Math.ceil(totalHits / 12);
-
-    // const lastPage = page === pages;
-
-    const showLoadMore = page === pages && !images.length && !isLoading;
-
-    // const ShowLoadMore =
-    //   images.length !== 0 && images.length !== totalHits && !isLoading;
+    const showLoadMore = page && pages !== pages && !isLoading;
 
     return (
       <Container>
@@ -103,16 +89,7 @@ export class App extends Component {
         {images.length > 0 && (
           <ImageGallery images={images} onClick={this.onItemClick} />
         )}
-        {/* {images.length >= 12 && <LoadMore onClick={this.onButtonClick} />} */}
-        {/* {!isLoading &&
-          error === '' &&
-          (totalHits ? (
-            <p>No more content</p>
-          ) : (
-            images.length !== 0 && <LoadMore handleClick={this.onButtonClick} />
-          ))} */}
         {showLoadMore && <LoadMore onClick={this.onButtonClick} />}
-        {/* {!isLoading && !lastPage && <LoadMore onClick={this.onButtonClick} />} */}
       </Container>
     );
   }
