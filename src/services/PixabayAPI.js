@@ -12,7 +12,7 @@ const fetchImages = async (search, page) => {
       largeImageURL: largeImageURL,
     })
   );
-  const pages = Math.ceil(response.data.hits / 12);
+  const pages = Math.ceil(response.data.totalHits / 12);
   return { images, pages };
 };
 

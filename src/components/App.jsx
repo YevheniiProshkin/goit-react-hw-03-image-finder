@@ -13,10 +13,10 @@ export class App extends Component {
     page: 1,
     images: [],
     isLoading: false,
-    error: null,
+    error: '',
     modalImageURL: null,
     isOpen: false,
-    pages: null,
+    pages: 0,
   };
 
   async componentDidUpdate(prevProp, prevState) {
