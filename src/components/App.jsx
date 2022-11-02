@@ -6,6 +6,7 @@ import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { LoadMore } from 'components/Button/Button';
 import { Loader } from 'components/Loader/Loader';
 import { Modal } from 'components/Modal/Modal';
+import Notiflix from 'notiflix';
 
 export class App extends Component {
   state = {
@@ -16,7 +17,7 @@ export class App extends Component {
     error: '',
     modalImageURL: null,
     isOpen: false,
-    pages: 0,
+    pages: false,
   };
 
   async componentDidUpdate(prevProp, prevState) {
@@ -33,13 +34,18 @@ export class App extends Component {
             images: [...prevState.images, ...images],
           };
         });
+        if (images.length === 0) {
+          Notiflix.Notify.failure(
+            'Sorry, picture not found. Please try again.'
+          );
+        }
       } catch (error) {
         this.setState({ error: 'picture not found' });
       } finally {
         this.setState({ isLoading: false });
       }
     }
-    return null;
+    return;
   }
 
   onSubmit = searchQuery => {

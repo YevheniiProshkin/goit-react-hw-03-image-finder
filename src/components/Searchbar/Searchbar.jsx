@@ -8,6 +8,7 @@ import {
   Span,
 } from 'components/Searchbar/Searchbar.styled';
 import { MdSearch } from 'react-icons/md';
+import Notiflix from 'notiflix';
 
 export class Searchbar extends Component {
   state = {
@@ -17,7 +18,7 @@ export class Searchbar extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.searchQuery === '') {
-      alert('Fill in the search string');
+      Notiflix.Notify.info('Enter text!');
       return;
     }
     this.props.onSubmit(this.state.searchQuery);
