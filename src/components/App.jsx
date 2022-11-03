@@ -83,7 +83,7 @@ export class App extends Component {
     const { images, isLoading, isOpen, modalImageURL, page, pages } =
       this.state;
 
-    const showLoadMore = pages && page !== pages && !isLoading;
+    const showLoadMore = !!pages && page !== pages && !isLoading;
 
     return (
       <Container>
